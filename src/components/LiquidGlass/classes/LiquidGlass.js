@@ -29,16 +29,16 @@ const CAPSULE_PARAMS = {
   metalness: 0.0,
   clearcoat: 0.0,
   clearcoatRoughness: 0.0,
-  ior: 1.5,
+  ior: 1.3,
   iridescence: 1,
   iridescenceIOR: 1,
-  thickness: 100,
-  reflectivity: 0.25,
+  thickness: 68,
+  reflectivity: 0.3,
 
   // Transition Material
   transmissionSampler: true,
-  chromaticAberration: 0.02,
-  anisotrophicBlur: 0.0,
+  chromaticAberration: 0.08,
+  anisotrophicBlur: 0.08,
   distortion: 0,
   distortionScale: 0.0,
   temporalDistortion: 0,
@@ -345,6 +345,11 @@ export default class LiquidGlassMeshes extends Three {
     let mask3 = loader.load("PillMask3a.png");
     this.textures.mask3 = mask3;
 
+    let mask4 = loader.load("PillMask4.jpg");
+    mask4.wrapS = THREE.ClampToEdgeWrapping;
+    mask4.wrapT = THREE.ClampToEdgeWrapping;
+    this.textures.mask4 = mask4;
+
     let noise = loader.load("noiseTexture.png");
     noise.wrapS = THREE.RepeatWrapping;
     noise.wrapT = THREE.RepeatWrapping;
@@ -573,6 +578,7 @@ export default class LiquidGlassMeshes extends Three {
               uMask1: new THREE.Uniform(this.textures.mask1),
               uMask2: new THREE.Uniform(this.textures.mask2),
               uMask3: new THREE.Uniform(this.textures.mask3),
+              uMask4: new THREE.Uniform(this.textures.mask4),
               uNoise: new THREE.Uniform(this.textures.noise),
               uProgress: new THREE.Uniform(),
             },

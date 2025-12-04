@@ -2,6 +2,7 @@ uniform sampler2D uTexture;
 uniform sampler2D uMask1;
 uniform sampler2D uMask2;
 uniform sampler2D uMask3;
+uniform sampler2D uMask4;
 uniform sampler2D uNoise;
 uniform float uProgress;
 
@@ -41,22 +42,36 @@ void main() {
   mask2Uv.y += uProgress * 0.42;
   float mask2 = texture2D(uMask2, mask2Uv).r;
   mask2 = smoothstep(0.6, 0.4, mask2);
-  // color = vec3(mask2);
-  // color = vec3(discardMask);
   alpha *= mask2;
 
-  // if (alpha < 0.99) discard;
+
   
   // vec2 mask3Uv = vUv;
-  // mask3Uv.y += 0.15;
-  // float uv3X = 0.01;
-  // float p3 = uProgress;
-  // mask3Uv.x = mix(uv3X * p3, 1.0 - uv3X * p3, mask3Uv.x);
-  // mask3Uv.y *= 1.0 - (p3) * 0.6;
-  // mask3Uv.y += (p3) * 0.2;
   // float mask3 = texture2D(uMask3, mask3Uv).r;
   // alpha  *= smoothstep(0.8, 0.1, mask3);
   // alpha  *= 1.0 - mask3;
+
+  
+  // float mask4Start = 0.15;
+  // float mask4Offset = 1.2;
+  
+  vec2 mask4RUv = vUv;
+  float mask4r = texture2D(uMask4, mask4RUv).r;
+
+  vec2 mask4GUv = vUv;
+  mask4GUv.y -= uProgress * 0.5;
+  float mask4g = texture2D(uMask4, mask4GUv).g;
+
+  float mask4 = mask4r * mask4g;
+  mask4 = smoothstep(0.8, 0.1, mask4);
+
+  alpha *= mask4;
+  
+  float mask4Offset = mask4r * mask4g;
+  mask4Offset = smoothstep(0.0, 1.0, mask4Offset);  
+  
+  // color = vec3(mask4);
+  // alpha = 1.0;
 
   // Noise
   // vec2 noiseUv = vUv;
