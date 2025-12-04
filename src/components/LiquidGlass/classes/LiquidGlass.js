@@ -50,16 +50,16 @@ const CARD_PARAMS = {
   metalness: 0.02,
   clearcoat: 0.1,
   clearcoatRoughness: 0.05,
-  ior: 2.7,
+  ior: 1.7,
   iridescence: 1,
   iridescenceIOR: 1.4,
-  thickness: 68,
-  reflectivity: 0.84,
+  thickness: 124,
+  reflectivity: 0.54,
 
   // Transition Material
   transmissionSampler: true,
-  chromaticAberration: 0.6,
-  anisotrophicBlur: 0.18,
+  chromaticAberration: 0.2,
+  anisotrophicBlur: 0.1,
   distortion: 0,
   distortionScale: 0.0,
   temporalDistortion: 0,
@@ -294,7 +294,7 @@ export default class LiquidGlassMeshes extends Three {
         texture.needsUpdate = true;
         material.map = texture;
         material.needsUpdate = true;
-        material.color = new THREE.Color(1, 1, 1).multiplyScalar(1.0);
+        material.color = new THREE.Color(1, 1, 1).multiplyScalar(1.1);
         if (this.capsule.mesh) {
           this.capsule.mesh.visible = true;
         }
@@ -881,7 +881,7 @@ export default class LiquidGlassMeshes extends Three {
         //   Math.abs(pointer - card.mesh.position.x) / this.sizes.width;
         // easeFactor *= 0.05;
 
-        card.mesh.position.x += (snapTo - card.mesh.position.x) * 0.04;
+        card.mesh.position.x += (snapTo - card.mesh.position.x) * 0.08;
 
         card.mesh.position.x = clamp(
           card.mesh.position.x,
