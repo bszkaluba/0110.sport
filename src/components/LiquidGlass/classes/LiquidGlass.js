@@ -323,11 +323,8 @@ export default class LiquidGlassMeshes extends Three {
     let loader = new THREE.TextureLoader();
 
     this.textures = {};
-    let glass = loader.load("Glass-shape.png");
-    // glass.colorSpace = THREE.SRGBColorSpace;
-    this.textures.glass = glass;
 
-    let rainbow = loader.load("RainbowPng.png");
+    let rainbow = loader.load("Rainbow2.jpg");
     rainbow.wrapS = THREE.MirroredRepeatWrapping;
     rainbow.wrapT = THREE.MirroredRepeatWrapping;
     // rainbow.colorSpace = THREE.SRGBColorSpace;
@@ -339,35 +336,16 @@ export default class LiquidGlassMeshes extends Three {
     mask1.wrapT = THREE.MirroredRepeatWrapping;
     this.textures.mask1 = mask1;
 
-    let mask2 = loader.load("PillMask2a.png");
-    // mask2.wrapS = THREE.MirroredRepeatWrapping;
-    // mask2.wrapT = THREE.MirroredRepeatWrapping;
+    let mask2 = loader.load("PillMask2.png");
     this.textures.mask2 = mask2;
 
-    let mask3 = loader.load("PillMask3a.png");
+    let mask3 = loader.load("PillMask3.png");
     this.textures.mask3 = mask3;
 
     let mask4 = loader.load("PillMask4.jpg");
     mask4.wrapS = THREE.ClampToEdgeWrapping;
     mask4.wrapT = THREE.ClampToEdgeWrapping;
     this.textures.mask4 = mask4;
-
-    let noise = loader.load("noiseTexture.png");
-    noise.wrapS = THREE.RepeatWrapping;
-    noise.wrapT = THREE.RepeatWrapping;
-    this.textures.noise = noise;
-
-    // let envmapLoader = new THREE.CubeTextureLoader();
-    // let envmap = envmapLoader.load([
-    //   "envmap1/px.png",
-    //   "envmap1/nx.png",
-    //   "envmap1/py.png",
-    //   "envmap1/ny.png",
-    //   "envmap1/pz.png",
-    //   "envmap1/nz.png",
-    // ]);
-    // envmap.colorSpace = THREE.SRGBColorSpace;
-    // this.textures.envmap = envmap;
   }
 
   createMaterial(name, parameters, samples = 16) {
