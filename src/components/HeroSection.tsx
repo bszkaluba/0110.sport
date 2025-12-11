@@ -102,7 +102,7 @@ export default function HeroSection({ triggerGlow }: HeroSectionProps) {
             id="capsule-placeholder"
             className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
           >
-            <img src="placeholder.png" className="w-full" />
+            <img src="placeholder.webp" className="w-full" />
           </div>
         </div>
 
