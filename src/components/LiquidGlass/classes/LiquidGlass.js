@@ -145,12 +145,13 @@ export default class LiquidGlassMeshes extends Three {
     this.references.logoOverlay = logoOverlay;
     let placeholderWidth = logo.offsetWidth + 64;
     let placeholderHeight = logo.offsetHeight + 80;
-    logoOverlay.style.width = placeholderWidth + "px";
-    logoOverlay.style.height = placeholderHeight + "px";
+    // logoOverlay.style.width = placeholderWidth + "px";
+    // logoOverlay.style.height = placeholderHeight + "px";
 
-    let placeholder = logoOverlay.querySelector("img");
-    placeholder.style.transform = "translateY(40px)";
-    // console.log(placeholder);
+    let placeholder = logoOverlay.querySelector("#capsule-placeholder");
+    placeholder.style.width = placeholderWidth + "px";
+
+    placeholder.querySelector("img").style.transform = "translateY(46px)";
 
     this.references.logoOverlayBorder = document.getElementById(
       "hero-section-logo-overlay-border"

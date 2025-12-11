@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import CollaboratePopup from "./ColloaboRate";
 
 interface HeroSectionProps {
@@ -16,6 +16,8 @@ export default function HeroSection({ triggerGlow }: HeroSectionProps) {
       setShowPopup(true);
     }, 0);
   };
+
+  useEffect(() => {}, []);
 
   return (
     <section className="max-w-[1383px] CustmWidth heroSec w-full pt-20 pb-8 px-4 lg:px-[30px] xl:px-[60px] flex items-center mx-auto justify-between sm:py-10">
@@ -93,10 +95,15 @@ export default function HeroSection({ triggerGlow }: HeroSectionProps) {
 
         <div
           id="hero-section-logo-overlay"
-          className="z-50 absolute top-1/2 left-1/2 w-64 h-64 -translate-x-1/2 -translate-y-1/2 bg-[#0e0e0e]"
+          className="z-50 absolute top-1/2 left-1/2 w-[400px] h-[400px] -translate-x-1/2 -translate-y-1/2 bg-[#0e0e0e]"
           data-html2canvas-ignore
         >
-          <img src="placeholder.png" className="w-full" />
+          <div
+            id="capsule-placeholder"
+            className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
+          >
+            <img src="placeholder.png" className="w-full" />
+          </div>
         </div>
 
         <img
