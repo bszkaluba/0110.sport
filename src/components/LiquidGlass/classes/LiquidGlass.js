@@ -350,7 +350,7 @@ export default class LiquidGlassMeshes extends Three {
     let mask2 = loader.load("PillMask2.png");
     this.textures.mask2 = mask2;
 
-    let mask3 = loader.load("PillMask3.png");
+    let mask3 = loader.load("PillMask3.jpg");
     this.textures.mask3 = mask3;
 
     let mask4 = loader.load("PillMask4.jpg");
