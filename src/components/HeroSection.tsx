@@ -115,7 +115,7 @@ export default function HeroSection({ triggerGlow }: HeroSectionProps) {
 
       <div
         id="hero-section-logo-overlay-border"
-        className="absolute w-48 h-48 top-0 left-0 -translate-x-1/2 translate-y-0 bg-transparent z-[100] pointer-events-none hidden border-8 border-[#0e0e0e] border-t-0"
+        className="absolute w-48 h-48 top-0 left-0 -translate-x-1/2 translate-y-0 bg-transparent z-[51] pointer-events-none hidden border-8 border-[#0e0e0e] border-t-0"
         data-html2canvas-ignore
       ></div>
 
