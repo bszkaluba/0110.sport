@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { createPortal } from "react-dom";
 // import axios from "axios";
 
@@ -12,6 +12,10 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   const [showCopied, setShowCopied] = useState(false);
+
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const [showEmailWarning, setShowEmailWarning] = useState(false);
+
   // const [username, setUsername] = useState('');
   // const [loading, setLoading] = useState(false);
 
@@ -29,6 +33,7 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
   };
 
   function handleEmail(data: any) {
+    // console.log(data.target.value);
     setEmail(data.target.value);
   }
 
@@ -60,7 +65,22 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
 
     //   console.log("API Response:", response.data);
 
-    setShowSuccess(true);
+    if (emailInputRef.current) {
+      let isValid = emailInputRef.current.checkValidity();
+      setShowEmailWarning(!isValid);  
+
+      if (isValid) {
+        console.log({
+          email, message
+        });
+
+        setShowSuccess(true);
+        setEmail("");
+        setMessage("");
+      }
+      
+    }
+
     // } catch (error) {
     //   console.error("Error sending message:", error);
     //   alert("Something went wrong. Please try again later.");
@@ -114,15 +134,31 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
               />
               <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#9AA0A6]" />
             </div> */}
-            <div className="relative w-full group focus-within:[&>div]:bg-[#1967D2]">
-              <input
-                type="email"
-                placeholder="your@email.com"
-                onChange={(data) => handleEmail(data)}
-                value={email}
-                className="w-full BodyLarge leading-6 font-dm-bold placeholder:text-[#616161] hover:placeholder:text-[#616161] hover:text-[#616161] focus:text-[#616161] focus:placeholder:text-[#616161] active:text-[#616161]! h-12 bg-[#F1F5F8] rounded-sm px-3 py-2 focus:outline-none text-center [&:not(:placeholder-shown)+div]:bg-[#1967D2]"
-              />
-              <div className="absolute bottom-0 left-0 w-full h-0.5 bg-[#9AA0A6] group-hover:bg-[#212121] group-focus-within:bg-[#1967D2]" />
+            <div className="relative">
+              <div className="relative w-full group focus-within:[&>div]:bg-[#1967D2]">
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  onChange={(data) => handleEmail(data)}
+                  value={email}
+                  className="w-full BodyLarge leading-6 font-dm-bold placeholder:text-[#616161] hover:placeholder:text-[#616161] hover:text-[#616161] focus:text-[#616161] focus:placeholder:text-[#616161] active:text-[#616161]! h-12 bg-[#F1F5F8] rounded-sm px-3 py-2 focus:outline-none text-center [&:not(:placeholder-shown)+div]:bg-[#1967D2]"
+                  required
+                  ref={emailInputRef}
+                />
+                <div className={`absolute bottom-0 left-0 w-full h-0.5 group-hover:bg-[#212121] group-focus-within:bg-[#1967D2]
+                ${showEmailWarning ? "!bg-[#A82D23]" : "bg-[#9AA0A6]"}`} 
+                ></div>
+              </div>
+
+              {showEmailWarning && (
+                <div className="absolute inset-0 pointer-events-none">
+                  <div className="absolute top-full left-0 text-sm text-[#A82D23] select-none">
+                    Enter a valid email adress.
+                  </div>
+
+                  <img src="error.svg" className="absolute h-1/2 aspect-square right-2 top-1/2 -translate-y-1/2" />
+                </div>
+              )}
             </div>
 
             <div className="relative w-full mt-4 group focus-within:[&>div]:bg-[#1967D2]">
