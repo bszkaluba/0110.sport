@@ -73,7 +73,7 @@ function App() {
 
                 // restart shimmer cleanly
                 setTriggerGlow(false);
-                requestAnimationFrame(() => setTriggerGlow(true));
+                // requestAnimationFrame(() => setTriggerGlow(true));
 
                 setTimeout(() => {
                   buttonDebounceRef.current = false;
