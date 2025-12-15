@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 // import axios from "axios";
+import gsap from "gsap";
 
 interface CollaboratePopupProps {
   isOpen: boolean;
@@ -15,6 +16,33 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const [showEmailWarning, setShowEmailWarning] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const messageSentTl = useRef(gsap.timeline());
+
+  useEffect(() => {
+    if (!containerRef.current) {
+      return;
+    }
+
+    let tl = messageSentTl.current;
+    tl.clear();
+    tl.pause();
+    tl.fromTo(containerRef.current, {
+      opacity: 1,
+    }, {
+      opacity: 0,
+      duration: 0.3,
+      delay: 2,
+      onComplete: () => {
+        onClose();
+      }
+    });
+  }, [isOpen]);
+
+  const onPopupClose = () => {
+    messageSentTl.current.clear();
+    onClose();
+  }
 
   // const [username, setUsername] = useState('');
   // const [loading, setLoading] = useState(false);
@@ -77,6 +105,7 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
         setShowSuccess(true);
         setEmail("");
         setMessage("");
+        messageSentTl.current.play();
       }
       
     }
@@ -95,7 +124,7 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
     return createPortal(
       <div
         className="fixed inset-0 bg-black/50 backdrop-blur-[5px] flex items-center justify-center z-[1000]"
-        onClick={onClose}
+        onClick={onPopupClose}
       >
         <div className="bg-white rounded-sm text-center px-10 py-10 w-[95%] md:w-full max-w-[480px] shadow-lg">
           <p className="BodyLarge leading-6 font-dm-regular Black2">Message sent.</p>
@@ -107,8 +136,9 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
 
   return createPortal(
     <div
+      ref={containerRef}
       className="fixed inset-0 bg-black/50 backdrop-blur-[5px] flex items-center justify-center z-[1000]"
-      onClick={onClose}
+      onClick={onPopupClose}
     >
       <div
         className="bg-white rounded-sm text-center lg:px-10 lg:py-10 px-6 pt-6 pb-8 w-[95%] md:w-full space-y-10 max-w-[480px] shadow-lg relative"
