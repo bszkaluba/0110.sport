@@ -183,10 +183,10 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
               {showEmailWarning && (
                 <div className="absolute inset-0 pointer-events-none">
                   <div className="absolute top-full left-0 text-sm text-[#A82D23] select-none">
-                    Enter a valid email adress.
+                    Enter a valid email address.
                   </div>
 
-                  <img src="error.svg" className="absolute h-1/2 aspect-square right-2 top-1/2 -translate-y-1/2" />
+                  <img src="error.svg" className="absolute h-[calc(100%-24px)] aspect-square right-4 top-1/2 -translate-y-1/2" />
                 </div>
               )}
             </div>
