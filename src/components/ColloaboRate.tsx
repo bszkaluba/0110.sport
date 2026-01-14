@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-// import axios from "axios";
 import gsap from "gsap";
 
 interface CollaboratePopupProps {
@@ -13,6 +12,8 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   const [showCopied, setShowCopied] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const [showEmailWarning, setShowEmailWarning] = useState(false);
@@ -44,9 +45,6 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
     onClose();
   }
 
-  // const [username, setUsername] = useState('');
-  // const [loading, setLoading] = useState(false);
-
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault(); // stop mailto from opening
 
@@ -69,53 +67,42 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
     setMessage(data.target.value);
   }
 
-  // function handleUsername(data: any) {
-  //   setUsername(data.target.value);
-  // }
-
   async function handleSend() {
-    // if (loading) return;
+    if (loading) return;
 
-    // setLoading(true);
+    if (!emailInputRef.current) return;
 
-    // const payload = {
-    //   name: "Test user",
-    //   email: email,
-    //   message: message,
-    // };
+    const isValid = emailInputRef.current.checkValidity();
+    setShowEmailWarning(!isValid);
 
-    // try {
-    //   const response = await axios.post("http://69.62.85.124:3054/api/email/contact", payload, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   });
+    if (!isValid) return;
 
-    //   console.log("API Response:", response.data);
+    setLoading(true);
+    setError('');
 
-    if (emailInputRef.current) {
-      let isValid = emailInputRef.current.checkValidity();
-      setShowEmailWarning(!isValid);  
+    try {
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, message }),
+      });
 
-      if (isValid) {
-        console.log({
-          email, message
-        });
-
-        setShowSuccess(true);
-        setEmail("");
-        setMessage("");
-        messageSentTl.current.play();
+      if (!response.ok) {
+        throw new Error('Failed to send email');
       }
-      
-    }
 
-    // } catch (error) {
-    //   console.error("Error sending message:", error);
-    //   alert("Something went wrong. Please try again later.");
-    // } finally {
-    //   setLoading(false);
-    // }
+      setShowSuccess(true);
+      setEmail('');
+      setMessage('');
+      messageSentTl.current.play();
+    } catch (err) {
+      console.error('Error sending email:', err);
+      setError('Failed to send message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (!isOpen) return null;
@@ -203,18 +190,20 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
 
 
 
+            {error && (
+              <p className="text-sm text-[#A82D23]">{error}</p>
+            )}
+
             <div className="p-px rounded-sm BodyLarge leading-6 bg-linear-to-b from-[#737373] to-[#0E0E0E]">
               <button
                 type="button"
                 onClick={handleSend}
-                // disabled={loading}
-                // className={`w-full cursor-pointer ${
-                //   loading ? "bg-[#555]" : "bg-[#232323] hover:bg-[#2f2f2f]"
-                // } text-white rounded-sm py-2 font-medium transition`}
-                className={`w-full cursor-pointer text-white rounded-sm py-2 font-medium transition bg-[#232323] hover:bg-[#2f2f2f]`}
+                disabled={loading}
+                className={`w-full cursor-pointer text-white rounded-sm py-2 font-medium transition ${
+                  loading ? "bg-[#555]" : "bg-[#232323] hover:bg-[#2f2f2f]"
+                }`}
               >
-                {/* {loading ? "Sending..." : "Send"} */}
-                {"Send"}
+                {loading ? "Sending..." : "Send"}
               </button>
             </div>
           </form>
