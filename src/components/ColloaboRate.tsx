@@ -20,6 +20,17 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
   const containerRef = useRef<HTMLDivElement>(null);
   const messageSentTl = useRef(gsap.timeline());
 
+  // Reset form state when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setShowSuccess(false);
+      setEmail('');
+      setMessage('');
+      setError('');
+      setShowEmailWarning(false);
+    }
+  }, [isOpen]);
+
   useEffect(() => {
     if (!containerRef.current) {
       return;
