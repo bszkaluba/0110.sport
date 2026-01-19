@@ -32,13 +32,12 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
   }, [isOpen]);
 
   useEffect(() => {
-    if (!containerRef.current) {
+    if (!showSuccess || !containerRef.current) {
       return;
     }
 
     let tl = messageSentTl.current;
     tl.clear();
-    tl.pause();
     tl.fromTo(containerRef.current, {
       opacity: 1,
     }, {
@@ -49,7 +48,8 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
         onClose();
       }
     });
-  }, [isOpen]);
+    tl.play();
+  }, [showSuccess]);
 
   const onPopupClose = () => {
     messageSentTl.current.clear();
@@ -121,6 +121,7 @@ const CollaboratePopup: React.FC<CollaboratePopupProps> = ({ isOpen, onClose }) 
   if (showSuccess) {
     return createPortal(
       <div
+        ref={containerRef}
         className="fixed inset-0 bg-black/50 backdrop-blur-[5px] flex items-center justify-center z-[1000]"
         onClick={onPopupClose}
       >
